@@ -56,4 +56,4 @@ BSD
 Author Information
 ------------------
 
-Benno Joy
+Peter Hudec
