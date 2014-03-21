@@ -12,6 +12,6 @@ galaxy_info:
      versions:
       - wheezy
   categories:
-    - dns
+    - networking
     - system
 dependencies: []
