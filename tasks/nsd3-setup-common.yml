@@ -1,0 +1,26 @@
+---
+- name: "[nsd] create dirrectories"
+  action: file path={{ item.file }} owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }} state=directory
+  tags:
+    - nsd
+    - setup
+  with_items:
+    - { file: "{{ dns_nsd_chroot }}", owner: "root", group: "{{ dns_nsd_group }}", mode: "0750" }
+    - { file: "{{ dns_nsd_chroot }}/zonefiles", owner: "{{ dns_nsd_user }}", group: "{{ dns_nsd_group }}", mode: "0750" }
+    - { file: "{{ dns_nsd_chroot }}/db", owner: "{{ dns_nsd_user }}", group: "{{ dns_nsd_group }}", mode: "0750" }
+    - { file: "{{ dns_nsd_chroot }}/db/nsd", owner: "{{ dns_nsd_user }}", group: "{{ dns_nsd_group }}", mode: "0750" }
+    - { file: "{{ dns_nsd_chroot }}/dev", owner: "root", group: "{{ dns_nsd_group }}", mode: "0750" }
+    - { file: "{{ dns_nsd_chroot }}/conf.d", owner: "root", group: "{{ dns_nsd_group }}", mode: "0750" }
+
+- name: "[rsyslog] listen to chroot bind logs"
+  action: template src=rsyslog/nsd.conf.j2 dest={{ dns_rsyslog_cfg }}/nsd.conf owner=root group=root mode=0640
+  tags:
+    - nsd
+    - setup
+  notify: "[rsyslog] restart service"
+
+- name: "[nsd] service boot state"
+  action: service name={{ dns_nsd_service }} enabled=yes
+  tags: 
+    - bind
+    - setup

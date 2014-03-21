@@ -1,0 +1,28 @@
+---
+- name: "[bind] check packages"
+  action: yum pkg={{ item }} state=present
+  tags:
+    - bind
+    - setup
+  with_items: "{{ dns_bind_packages }}"
+
+- name: "[bind] create directories for centos"
+  action: file path={{ item.file }} owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }} state=directory
+  tags:
+    - bind
+    - setup
+  with_items:
+    - { file: "{{ dns_bind_chroot }}/etc/zones", owner: "{{ dns_bind_user }}", group: "{{ bind_group }}", mode: "0750" }
+    - { file: "{{ dns_bind_chroot }}/conf.d", owner: "{{ dns_bind_user }}", group: "{{ bind_group }}", mode: "0750" }
+
+- name: "[bind] change startup options in /etc/sysconfig/named]"
+  action: >
+     lineinfile
+     regexp="^ROOTDIR="
+     line="ROOTDIR={{ bind_chroot }}"
+     dest=/etc/sysconfig/named
+     state=present
+     insertafter=EOF
+  tags:
+    - bind
+    - setup

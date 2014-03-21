@@ -1,0 +1,30 @@
+---
+
+#### HOST RELATED settings
+##########################
+# override in host_vars or group_vars
+
+# list of the IPv4/IPv6 addresses to listen
+# leave at least loopback interface for IPv6 if your server is not dualstack
+dns_listen_ipv4:
+  - 127.0.0.1
+dns_listen_ipv6:
+  - ::1
+
+# list of tsig configuration files
+# there will used template file 
+#  - templates/bind9/bind_cfg_key.{{ item }}.j2 for bind9
+#  - templates/nsd3/nsd_cfg_key.{{ item }}.j2 for nsd3
+dns_keys_tsig: []
+
+# hide dns version
+dns_version: "Authoritative dns server for ACME CORP."
+
+# list of the zones to server
+# the 'zone' item is key into 'dns_zone_data' structure in vars/main.yml
+# the 'templates' item is a jinja2 template file in templates/(bind|nsd)
+  - templates/bind9/bind_cfg_zone.{{ item }}.j2 for bind9
+  - templates/nsd3/nsd_cfg_zone.{{ item }}.j2 for nsd3
+dns_zones:
+  - zone: example.com
+    template: slave-ns-nokey

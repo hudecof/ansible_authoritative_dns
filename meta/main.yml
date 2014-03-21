@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: "Peter Hudec"
+  company: CNC, a.s.
+  license: BSD
+  min_ansible_version: 1.4 
+  platforms:
+   - name: CentOS
+     versions:
+      - 6
+   - name: Debian
+     versions:
+      - wheezy
+  categories:
+    - dns
+    - system
+dependencies: []

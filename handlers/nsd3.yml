@@ -1,0 +1,8 @@
+---
+ - name: "[nsd] restart service"
+   action: service name={{ dns_nsd_service }} state=restarted
+ 
+ - name: "[nsd] combine config"
+   action: assemble backup=yes src={{ dns_nsd_chroot }}/conf.d/ dest={{ dns_nsd_cfg }} owner={{ dns_nsd_user }} group={{ dns_nsd_group }} mode=0640
+   notify:
+     - "[nsd] restart service"

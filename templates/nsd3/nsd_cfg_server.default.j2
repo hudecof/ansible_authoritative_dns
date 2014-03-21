@@ -1,0 +1,52 @@
+# {{ ansible_managed }}
+server:
+{% for item in dns_listen_ipv4 %}
+	ip-address: {{ item }}
+{% endfor %}
+{% for item in dns_listen_ipv6 %}
+	ip-address: {{ item }}
+{% endfor %}
+
+        hide-version: yes
+        debug-mode: no
+
+        ip4-only: no
+        ip6-only: no
+        
+        database: "{{ dns_nsd_chroot }}/db/nsd/nsd.db"
+
+        identity: "{{ dns_version }}"
+
+        server-count: 2
+        
+        tcp-count: 100
+        tcp-query-count: 10
+        tcp-timeout: 120
+
+        # Preferred EDNS buffer size for IPv4.
+        # ipv4-edns-size: 4096
+
+        # Preferred EDNS buffer size for IPv6.
+        # ipv6-edns-size: 4096
+
+        # File to store pid for nsd in.
+        pidfile: "{{ dns_nsd_chroot }}/db/nsd/nsd.pid"
+
+        port: 53
+
+        # statistics: 3600
+
+        # zone-stats-file: "/var/log/nsd.stats"
+
+        chroot: "{{ dns_nsd_chroot }}"
+
+        username: {{ dns_nsd_user }}
+
+        zonesdir: "{{ dns_nsd_chroot }}/zonefiles"
+        difffile: "{{ dns_nsd_chroot }}/db/nsd/ixfr.db"
+        xfrdfile: "{{ dns_nsd_chroot }}/db/nsd/xfrd.state"
+
+        # xfrd-reload-timeout: 10
+
+        # verbosity: 0
+

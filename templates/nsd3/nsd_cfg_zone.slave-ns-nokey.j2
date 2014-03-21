@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+# {{ dns_zone_data[item['zone']]['descr'] }}
+zone:
+        name: {{ item['zone'] }}
+        zonefile: {{ dns_zone_data[item['zone']]['file'] }}
+        allow-notify: 127.0.0.1 NOKEY
+        allow-notify: ffff::127.0.0.1 NOKEY
+        allow-notify: 203.0.113.1 NOKEY		# PUT YOUR MASTER HERE
+        request-xfr: 203.0.113.1 NOKEY		# PUT YOUR MASTER HERE
+	allow-axfr-fallback: yes

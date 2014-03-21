@@ -1,0 +1,54 @@
+---
+- name: "[bind] check packages"
+  action: apt pkg={{ item }} state=present
+  tags:
+    - bind
+    - setup
+  with_items: "{{ dns_bind_packages }}"
+
+- name: "[bind] create chroot directories"
+  action: file path={{ item.file }} owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }} state=directory
+  tags: 
+    - bind
+    - setup
+  with_items:
+    - { file: "{{ dns_bind_chroot }}", owner: "root", group: "{{ dns_bind_group }}", mode: "0750" }
+    - { file: "{{ dns_bind_chroot }}/etc", owner: "root", group: "root", mode: "0755" }
+    - { file: "{{ dns_bind_chroot }}/etc/zones", owner: "{{ dns_bind_user }}", group: "{{ dns_bind_group }}", mode: "0750" }
+    - { file: "{{ dns_bind_chroot }}/dev", owner: "root", group: "root", mode: "0755" }
+    - { file: "{{ dns_bind_chroot }}/var/cache/bind", owner: "{{ dns_bind_user }}", group: "{{ dns_bind_group }}", mode: "0750" }
+    - { file: "{{ dns_bind_chroot }}/var/run/named", owner: "{{ dns_bind_user }}", group: "{{ dns_bind_group }}", mode: "0750" }
+    - { file: "{{ dns_bind_chroot }}/conf.d", owner: "{{ dns_bind_user }}", group: "{{ dns_bind_group }}", mode: "0750" }
+
+- name: "[bind] create device files"
+  action: command mknod {{ item.file }} {{ item.type }} creates={{ item.file }}
+  tags: 
+    - bind
+    - setup
+  with_items:
+    - { file: "{{ dns_bind_chroot }}/dev/null",  type: "c 1 3" }
+    - { file: "{{ dns_bind_chroot }}/dev/random", type: "c 1 8" }
+
+- name: "[bind] move non chroot file to chroot"
+  action: command mv /etc/bind {{ dns_bind_chroot }}/etc creates={{ dns_bind_chroot }}/etc/bind
+  tags:
+    - bind
+    - setup
+
+- name: "[bind] create symlink for to chroot for compatibility"
+  action: file src={{ dns_bind_chroot }}/etc/bind dest=/etc/bind state=link
+  tags:
+    - bind
+    - setup
+
+- name: "[bind] change startup options in /etc/default/bind9]"
+  action: >
+     lineinfile
+     regexp="^OPTIONS"
+     line='OPTIONS="-u {{ dns_bind_user }} -t {{ dns_bind_chroot }}"'
+     dest=/etc/default/bind9
+     state=present
+     insertafter=EOF
+  tags:
+    - bind
+    - setup

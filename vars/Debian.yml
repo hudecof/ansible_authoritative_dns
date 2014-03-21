@@ -1,0 +1,27 @@
+---
+# bind relates configuration
+dns_bind_service: bind9
+dns_bind_packages:
+  - bind9
+  - rsyslog
+
+dns_bind_chroot: /srv/named
+dns_bind_user: bind
+dns_bind_group: bind
+dns_bind_cfg: /srv/named/etc/bind/named.conf
+
+
+# nsd related configuration
+dns_nsd_service: nsd3
+dns_nsd_packages:
+  - nsd3
+  - rsyslog
+
+dns_nsd_chroot: /srv/nsd3
+dns_nsd_user: nsd
+dns_nsd_group: nsd
+dns_nsd_cfg: /etc/nsd3/nsd.conf
+
+# rsyslog related configuration
+dns_rsyslog_service: rsyslog
+dns_rsyslog_cfg: /etc/rsyslog.d

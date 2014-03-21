@@ -1,0 +1,40 @@
+---
+- name: "[bind] configuration (options)"
+  action: template src={{ item }} dest={{ dns_bind_chroot }}/conf.d/00_server.cfg backup=no owner={{ dns_bind_user }}  group={{ dns_bind_group }} mode=0640
+  first_available_file:
+    - bind9/bind_cfg_options.{{ inventory_hostname }}.j2
+    - bind9/bind_cfg_options.default.j2
+  tags:
+    - bind
+    - config
+  notify:
+    - "[bind9] combine config"
+
+- name: "[bind] configuration (acl)"
+  action: template src={{ item }} dest={{ dns_bind_chroot }}/conf.d/10_acl.cfg backup=no owner={{ dns_bind_user }}  group={{ dns_bind_group }} mode=0640
+  first_available_file:
+    - bind9/bind_cfg_acl.{{ inventory_hostname }}.j2
+    - bind9/bind_cfg_acl.default.j2
+  tags:
+    - bind
+    - config
+  notify:
+    - "[bind9] combine config" 
+
+- name: "[bind] configuration (key)"
+  action: template src=bind9/bind_cfg_key.{{ item }} dest={{ dns_bind_chroot }}/conf.d/20_key_{{ item }}.cfg owner={{ dns_bind_user }}  group={{ dns_bind_group }} mode=0640
+  tags:
+    - bind
+    - config
+  with_items: "{{ dns_keys_tsig }}"
+  notify:
+    - "[bind9] combine config"
+
+- name: "[bind] configuration (zones)"
+  action: template src=bind9/bind_cfg_zone.{{ item.template }}.j2 dest={{ dns_bind_chroot }}/conf.d/30_zone.{{ item.zone }}.cfg owner={{ dns_bind_user }} group={{ dns_bind_group }} mode=0640
+  tags:
+    - bind
+    - config
+  with_items: "{{ dns_zones }}"
+  notify:
+    - "[bind9] combine config"

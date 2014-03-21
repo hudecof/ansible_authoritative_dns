@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+# {{ dns_zone_data[item['zone']]['descr'] }}
+zone "{{ item['zone'] }}" {
+        type slave;
+        masters {
+        	203.0.113.1; // PUT YOUR MASTER HERE
+        };
+        file "{{ dns_zone_data[item['zone']]['file'] }}";
+        allow-query { any; };
+        allow-transfer { none; }; 
+        allow-notify { 203.0.113.1; }; // PUT YOUR MASTER HERE
+        notify no;
+};

@@ -1,0 +1,4 @@
+---
+- include: bind9.yml
+- include: nsd3.yml
+- include: rsyslog.yml

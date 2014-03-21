@@ -1,0 +1,29 @@
+---
+- name: "[nsd] configuration (server)"
+  action: template src={{ item }} dest={{ dns_nsd_chroot }}/conf.d/00_server.cfg backup=no owner={{ dns_nsd_user }}  group={{ dns_nsd_group }} mode=0640
+  first_available_file:
+    - nsd3/nsd_cfg_server.{{ inventory_hostname }}.j2
+    - nsd3/nsd_cfg_server.default.j2
+  tags: 
+    - nsd
+    - config
+  notify:
+    - "[nsd] combine config"
+
+- name: "[nsd] configuration (key)"
+  action: copy src=nsd3/nsd_cfg_key.{{ item }} dest={{ dns_nsd_chroot }}/conf.d/10_key_{{ item }}.cfg owner={{ dns_nsd_user }}  group={{ dns_nsd_group }} mode=0640
+  tags:
+    - nsd
+    - config
+  with_items: "{{ dns_keys_tsig }}"
+  notify:
+    - "[nsd] combine config"
+
+- name: "[nsd] configuration (zones)"
+  action: template src=nsd3/nsd_cfg_zone.{{ item.template }}.j2 dest={{ dns_nsd_chroot }}/conf.d/20_zone.{{ item.zone }}.cfg owner={{ dns_nsd_user }}  group={{ dns_nsd_group }} mode=0640
+  tags: 
+    - nsd
+    - config
+  with_items: "{{ dns_zones }}"
+  notify:
+    - "[nsd] combine config"

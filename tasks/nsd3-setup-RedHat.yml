@@ -1,0 +1,7 @@
+---
+- name: "[nsd] check packages"
+  action: yum pkg={{ item }} state=present
+  tags:
+    - nsd
+    - setup
+  with_items: "{{ dns_nsd_packages }}"

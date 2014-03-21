@@ -1,0 +1,13 @@
+---
+- name: "[rsyslog] listen to chroot bind logs"
+  action: template src=rsyslog/bind.conf.j2 dest={{ dns_rsyslog_cfg }}/bind.conf owner=root group=root mode=0644
+  tags:
+    - bind
+    - setup
+  notify: "[rsyslog] restart service"
+
+- name: "[bind] service boot state"
+  action: service name={{ dns_bind_service }} enabled=yes
+  tags:
+    - bind
+    - setup

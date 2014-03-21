@@ -1,0 +1,8 @@
+---
+ - name: "[bind9] restart service"
+   action: service name={{ dns_bind_service }} state=restarted
+ 
+ - name: "[bind9] combine config"
+   action: assemble backup=yes src={{ dns_bind_chroot }}/conf.d/ dest={{ dns_bind_cfg }} owner={{ dns_bind_user }} group={{ dns_bind_group }} mode=0640
+   notify:
+     - "[bind9] restart service" 

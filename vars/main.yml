@@ -1,0 +1,12 @@
+---
+# dns_zone_data holds the dictionary of the provisioned zone
+# - key -  pointer from host configuration. Choosse as you wish I use to use zone name
+# - zone - the real name of the zone
+# - file - the filename where will be the zone data stores. I use reverse order of tokens
+# - descr - this is comment in the configuration file
+
+dns_zone_data:
+  example.com:
+    zone: example.com
+    file: db.com.example
+    descr: "Example zone configuration"

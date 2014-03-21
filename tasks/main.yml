@@ -1,0 +1,21 @@
+---
+- name: Add the OS specific varibles
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- include: bind9-setup-Debian.yml
+  when: "'dns-bind9' in {{ group_names }} and ansible_os_family == 'Debian'"
+- include: bind9-setup-Redhat.yml
+  when: "'dns-bind9' in {{ group_names }} and ansible_os_family == 'RedHat'"
+- include: bind9-setup-common.yml
+  when: "'dns-bind9' in {{ group_names }}"
+- include: bind9-config.yml
+  when: "'dns-bind9' in {{ group_names }}"
+
+- include: nsd3-setup-Debian.yml
+  when: "'dns-nsd3' in {{ group_names }} and ansible_os_family == 'Debian'"
+- include: nsd3-setup-Redhat.yml
+  when: "'dns-nsd3' in {{ group_names }} and ansible_os_family == 'RedHat'"
+- include: nsd3-setup-common.yml
+  when: "'dns-nsd3' in {{ group_names }}"
+- include: nsd3-config.yml
+  when: "'dns-nsd3' in {{ group_names }}"
