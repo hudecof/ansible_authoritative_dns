@@ -1,6 +1,6 @@
 ---
 - name: "[bind] check packages"
-  action: apt pkg={{ item }} state=present
+  action: apt pkg={{ item }} state={{ dns_pkg_state }}
   tags:
     - bind
     - setup

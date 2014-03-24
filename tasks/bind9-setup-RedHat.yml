@@ -1,6 +1,6 @@
 ---
 - name: "[bind] check packages"
-  action: yum pkg={{ item }} state=present
+  action: yum pkg={{ item }} state={{ dns_pkg_state }}
   tags:
     - bind
     - setup

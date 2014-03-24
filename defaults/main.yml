@@ -4,6 +4,12 @@
 ##########################
 # override in host_vars or group_vars
 
+# Package states: present or latest
+dns_pkg_state: present
+
+# Service enabled: yes or no
+dns_service_enabled: yes
+
 # list of the IPv4/IPv6 addresses to listen
 # leave at least loopback interface for IPv6 if your server is not dualstack
 dns_listen_ipv4:
