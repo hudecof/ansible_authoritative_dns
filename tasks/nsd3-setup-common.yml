@@ -18,9 +18,3 @@
     - nsd
     - setup
   notify: "[rsyslog] restart service"
-
-- name: "[nsd] service boot state"
-  action: service name={{ dns_nsd_service }} enabled={{ dns_service_enabled }}
-  tags: 
-    - bind
-    - setup

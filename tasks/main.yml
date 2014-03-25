@@ -10,6 +10,8 @@
   when: "'dns-bind9' in {{ group_names }}"
 - include: bind9-config.yml
   when: "'dns-bind9' in {{ group_names }}"
+- include: bind9-service.yml
+  when: "'dns-bind9' in {{ group_names }}"
 
 - include: nsd3-setup-Debian.yml
   when: "'dns-nsd3' in {{ group_names }} and ansible_os_family == 'Debian'"
@@ -19,3 +21,6 @@
   when: "'dns-nsd3' in {{ group_names }}"
 - include: nsd3-config.yml
   when: "'dns-nsd3' in {{ group_names }}"
+- include: nsd3-service.yml
+  when: "'dns-nsd3' in {{ group_names }}"
+

@@ -5,9 +5,3 @@
     - bind
     - setup
   notify: "[rsyslog] restart service"
-
-- name: "[bind] service boot state"
-  action: service name={{ dns_bind_service }} enabled={{ dns_service_enabled }}
-  tags:
-    - bind
-    - setup

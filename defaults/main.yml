@@ -10,6 +10,9 @@ dns_pkg_state: present
 # Service enabled: yes or no
 dns_service_enabled: yes
 
+# Service state: started/stopped
+dns_service_state: started
+
 # list of the IPv4/IPv6 addresses to listen
 # leave at least loopback interface for IPv6 if your server is not dualstack
 dns_listen_ipv4:
