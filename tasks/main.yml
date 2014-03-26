@@ -1,6 +1,12 @@
 ---
 - name: Add the OS specific varibles
   include_vars: "{{ ansible_os_family }}.yml"
+  tags:
+    - nsd
+    - bind
+    - setup
+    - config
+    - service
 
 - include: bind9-setup-Debian.yml
   when: "'dns-bind9' in {{ group_names }} and ansible_os_family == 'Debian'"
