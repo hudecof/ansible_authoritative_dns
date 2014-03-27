@@ -2,6 +2,7 @@
 - name: "[nsd] create dirrectories"
   action: file path={{ item.file }} owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }} state=directory
   tags:
+    - dns
     - nsd
     - setup
   with_items:
@@ -15,6 +16,7 @@
 - name: "[rsyslog] listen to chroot bind logs"
   action: template src=rsyslog/nsd.conf.j2 dest={{ dns_rsyslog_cfg }}/nsd.conf owner=root group=root mode=0640
   tags:
+    - dns
     - nsd
     - setup
   notify: "[rsyslog] restart service"

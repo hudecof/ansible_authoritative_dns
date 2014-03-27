@@ -1,5 +1,6 @@
 - name: "[nsd] service boot/running state"
   action: service name={{ dns_nsd_service }} enabled={{ dns_service_enabled }} state={{ dns_service_state }}
-  tags: 
+  tags:
+    - dns
     - nsd
     - service

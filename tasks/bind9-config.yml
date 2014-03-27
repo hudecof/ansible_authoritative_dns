@@ -5,6 +5,7 @@
     - bind9/bind_cfg_options.{{ inventory_hostname }}.j2
     - bind9/bind_cfg_options.default.j2
   tags:
+    - dns
     - bind
     - config
   notify:
@@ -16,6 +17,7 @@
     - bind9/bind_cfg_acl.{{ inventory_hostname }}.j2
     - bind9/bind_cfg_acl.default.j2
   tags:
+    - dns
     - bind
     - config
   notify:
@@ -24,6 +26,7 @@
 - name: "[bind] configuration (key)"
   action: template src=bind9/bind_cfg_key.{{ item }} dest={{ dns_bind_chroot }}/conf.d/20_key_{{ item }}.cfg owner={{ dns_bind_user }}  group={{ dns_bind_group }} mode=0640
   tags:
+    - dns
     - bind
     - config
   with_items: "{{ dns_keys_tsig }}"
@@ -33,6 +36,7 @@
 - name: "[bind] configuration (zones)"
   action: template src=bind9/bind_cfg_zone.{{ item.template }}.j2 dest={{ dns_bind_chroot }}/conf.d/30_zone.{{ item.zone }}.cfg owner={{ dns_bind_user }} group={{ dns_bind_group }} mode=0640
   tags:
+    - dns
     - bind
     - config
   with_items: "{{ dns_zones }}"

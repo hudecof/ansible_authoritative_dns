@@ -2,6 +2,7 @@
 - name: "[nsd] check packages"
   action: apt pkg={{ item }} state={{ dns_pkg_state }}
   tags:
+    - dns
     - nsd
     - setup
   with_items: "{{ dns_nsd_packages }}"

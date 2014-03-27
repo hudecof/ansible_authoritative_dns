@@ -2,13 +2,15 @@
 - name: "[bind] check packages"
   action: apt pkg={{ item }} state={{ dns_pkg_state }}
   tags:
+    - dns
     - bind
     - setup
   with_items: "{{ dns_bind_packages }}"
 
 - name: "[bind] create chroot directories"
   action: file path={{ item.file }} owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }} state=directory
-  tags: 
+  tags:
+    - dns
     - bind
     - setup
   with_items:
@@ -22,7 +24,8 @@
 
 - name: "[bind] create device files"
   action: command mknod {{ item.file }} {{ item.type }} creates={{ item.file }}
-  tags: 
+  tags:
+    - dns
     - bind
     - setup
   with_items:
@@ -32,12 +35,14 @@
 - name: "[bind] move non chroot file to chroot"
   action: command mv /etc/bind {{ dns_bind_chroot }}/etc creates={{ dns_bind_chroot }}/etc/bind
   tags:
+    - dns
     - bind
     - setup
 
 - name: "[bind] create symlink for to chroot for compatibility"
   action: file src={{ dns_bind_chroot }}/etc/bind dest=/etc/bind state=link
   tags:
+    - dns
     - bind
     - setup
 
@@ -50,5 +55,6 @@
      state=present
      insertafter=EOF
   tags:
+    - dns
     - bind
     - setup
