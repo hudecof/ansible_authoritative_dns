@@ -5,7 +5,7 @@
     - dns
     - bind
     - setup
-  with_items: "{{ dns_bind_packages }}"
+  with_items: dns_bind_packages
 
 - name: "[bind] create directories for centos"
   action: file path={{ item.file }} owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }} state=directory
