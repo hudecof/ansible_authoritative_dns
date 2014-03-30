@@ -32,8 +32,8 @@ dns_version: "Authoritative dns server for ACME CORP."
 # list of the zones to server
 # the 'zone' item is key into 'dns_zone_data' structure in vars/main.yml
 # the 'templates' item is a jinja2 template file in templates/(bind|nsd)
-  - templates/bind9/bind_cfg_zone.{{ item }}.j2 for bind9
-  - templates/nsd3/nsd_cfg_zone.{{ item }}.j2 for nsd3
+#  - templates/bind9/bind_cfg_zone.{{ item }}.j2 for bind9
+#  - templates/nsd3/nsd_cfg_zone.{{ item }}.j2 for nsd3
 dns_zones:
   - zone: example.com
     template: slave-ns-nokey

@@ -4,6 +4,7 @@ galaxy_info:
   company: CNC, a.s.
   license: BSD
   min_ansible_version: 1.4 
+
   platforms:
    - name: CentOS
      versions:
@@ -11,7 +12,9 @@ galaxy_info:
    - name: Debian
      versions:
       - wheezy
+
   categories:
     - networking
     - system
+
 dependencies: []
