@@ -70,6 +70,7 @@ there will used template file
 - templates/bind9/bind_cfg_key.{{ item }}.j2 for bind9
 - templates/nsd3/nsd_cfg_key.{{ item }}.j2 for nsd3
 
+
     dns_zones:
       - zone: example.com
         template: slave-ns-nokey
