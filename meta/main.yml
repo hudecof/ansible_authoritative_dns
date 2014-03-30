@@ -6,7 +6,7 @@ galaxy_info:
   min_ansible_version: 1.4 
 
   platforms:
-   - name: CentOS
+   - name: EL
      versions:
       - 6
    - name: Debian
