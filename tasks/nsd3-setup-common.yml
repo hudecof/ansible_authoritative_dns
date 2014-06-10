@@ -14,7 +14,7 @@
     - { file: "{{ dns_nsd_chroot }}/conf.d", owner: "root", group: "{{ dns_nsd_group }}", mode: "0750" }
 
 - name: "[rsyslog] listen to chroot bind logs"
-  action: template src=rsyslog/nsd.conf.j2 dest={{ dns_rsyslog_cfg }}/nsd.conf owner=root group=root mode=0640
+  action: template src={{ dns_dir_prefix }}/rsyslog/nsd.conf.j2 dest={{ dns_rsyslog_cfg }}/nsd.conf owner=root group=root mode=0640
   tags:
     - dns
     - nsd

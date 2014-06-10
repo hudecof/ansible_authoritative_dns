@@ -37,3 +37,7 @@ dns_version: "Authoritative dns server for ACME CORP."
 dns_zones:
   - zone: example.com
     template: slave-ns-nokey
+
+# where to lookup for include and scripts
+# deflaults in role directory
+dns_dir_prefix: .

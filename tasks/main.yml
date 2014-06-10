@@ -11,7 +11,7 @@
 
 - include: bind9-setup-Debian.yml
   when: "'dns-bind9' in {{ group_names }} and ansible_os_family == 'Debian'"
-- include: bind9-setup-Redhat.yml
+- include: bind9-setup-RedHat.yml
   when: "'dns-bind9' in {{ group_names }} and ansible_os_family == 'RedHat'"
 - include: bind9-setup-common.yml
   when: "'dns-bind9' in {{ group_names }}"
@@ -22,7 +22,7 @@
 
 - include: nsd3-setup-Debian.yml
   when: "'dns-nsd3' in {{ group_names }} and ansible_os_family == 'Debian'"
-- include: nsd3-setup-Redhat.yml
+- include: nsd3-setup-RedHat.yml
   when: "'dns-nsd3' in {{ group_names }} and ansible_os_family == 'RedHat'"
 - include: nsd3-setup-common.yml
   when: "'dns-nsd3' in {{ group_names }}"
