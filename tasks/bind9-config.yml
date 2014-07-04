@@ -30,6 +30,18 @@
     - bind
     - config
   with_items: "{{ dns_keys_tsig }}"
+  when: "item.state == 'enabled'"
+  notify:
+    - "[bind9] combine config"
+
+- name: "[bind] configuration remove (key)"
+  action: file path={{ dns_bind_chroot }}/conf.d/20_key_{{ item }}.cfg state=absent
+  tags:
+    - dns
+    - bind
+    - config
+  with_items: "{{ dns_keys_tsig }}"
+  when: "item.state != 'enabled'"
   notify:
     - "[bind9] combine config"
 
@@ -40,5 +52,17 @@
     - bind
     - config
   with_items: "{{ dns_zones }}"
+  when: "item.state == 'enabled'"
+  notify:
+    - "[bind9] combine config"
+
+- name: "[bind] configuration remove (zones)"
+  action: file path={{ dns_bind_chroot }}/conf.d/30_zone.{{ item.zone }}.cfg state=absent
+  tags:
+    - dns
+    - bind
+    - config
+  with_items: "{{ dns_zones }}"
+  when: "item.state != 'enabled'"
   notify:
     - "[bind9] combine config"

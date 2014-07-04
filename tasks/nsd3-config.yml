@@ -18,8 +18,21 @@
     - nsd
     - config
   with_items: "{{ dns_keys_tsig }}"
+  when: "item.state == 'enabled'"
   notify:
     - "[nsd] combine config"
+
+- name: "[nsd] configurationi remove (key)"
+  action: file path={{ dns_nsd_chroot }}/conf.d/10_key_{{ item }}.cfg state=absent
+  tags:
+    - dns
+    - nsd
+    - config
+  with_items: "{{ dns_keys_tsig }}"
+  when: "item.state != 'enabled'"
+  notify:
+    - "[nsd] combine config"
+
 
 - name: "[nsd] configuration (zones)"
   action: template src={{ dns_dir_prefix }}/nsd3/nsd_cfg_zone.{{ item.template }}.j2 dest={{ dns_nsd_chroot }}/conf.d/20_zone.{{ item.zone }}.cfg owner={{ dns_nsd_user }}  group={{ dns_nsd_group }} mode=0640
@@ -28,5 +41,18 @@
     - nsd
     - config
   with_items: "{{ dns_zones }}"
+  when: "item.state == 'enabled'"
   notify:
     - "[nsd] combine config"
+
+- name: "[nsd] configuration remove (zones)"
+  action: file path={{ dns_nsd_chroot }}/conf.d/20_zone.{{ item.zone }}.cfg state=absent
+  tags:
+    - dns
+    - nsd
+    - config
+  with_items: "{{ dns_zones }}"
+  when: "item.state != 'enabled'"
+  notify:
+    - "[nsd] combine config"
+
