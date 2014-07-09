@@ -12,7 +12,7 @@
     - "[nsd] combine config"
 
 - name: "[nsd] configuration (key)"
-  action: copy src={{ dns_dir_prefix }}/nsd3/nsd_cfg_key.{{ item }} dest={{ dns_nsd_chroot }}/conf.d/10_key_{{ item }}.cfg owner={{ dns_nsd_user }}  group={{ dns_nsd_group }} mode=0640
+  action: template src={{ dns_dir_prefix }}/nsd3/nsd_cfg_key.{{ item.name }}.j2 dest={{ dns_nsd_chroot }}/conf.d/10_key_{{ item.name }}.cfg owner={{ dns_nsd_user }}  group={{ dns_nsd_group }} mode=0640
   tags:
     - dns
     - nsd
@@ -23,7 +23,7 @@
     - "[nsd] combine config"
 
 - name: "[nsd] configurationi remove (key)"
-  action: file path={{ dns_nsd_chroot }}/conf.d/10_key_{{ item }}.cfg state=absent
+  action: file path={{ dns_nsd_chroot }}/conf.d/10_key_{{ item.name }}.cfg state=absent
   tags:
     - dns
     - nsd
