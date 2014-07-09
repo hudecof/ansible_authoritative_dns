@@ -24,7 +24,7 @@
     - "[bind9] combine config" 
 
 - name: "[bind] configuration (key)"
-  action: template src={{ dns_dir_prefix }}/bind9/bind_cfg_key.{{ item }} dest={{ dns_bind_chroot }}/conf.d/20_key_{{ item }}.cfg owner={{ dns_bind_user }}  group={{ dns_bind_group }} mode=0640
+  action: template src={{ dns_dir_prefix }}/bind9/bind_cfg_key.{{ item.name }}.j2 dest={{ dns_bind_chroot }}/conf.d/20_key_{{ item.name }}.cfg owner={{ dns_bind_user }}  group={{ dns_bind_group }} mode=0640
   tags:
     - dns
     - bind
@@ -35,7 +35,7 @@
     - "[bind9] combine config"
 
 - name: "[bind] configuration remove (key)"
-  action: file path={{ dns_bind_chroot }}/conf.d/20_key_{{ item }}.cfg state=absent
+  action: file path={{ dns_bind_chroot }}/conf.d/20_key_{{ item.name }}.cfg state=absent
   tags:
     - dns
     - bind
