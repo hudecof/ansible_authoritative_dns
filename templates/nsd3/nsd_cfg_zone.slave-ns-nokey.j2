@@ -8,3 +8,8 @@ zone:
         allow-notify: 203.0.113.1 NOKEY		# PUT YOUR MASTER HERE
         request-xfr: 203.0.113.1 NOKEY		# PUT YOUR MASTER HERE
 	allow-axfr-fallback: yes
+{% if dns_primary_ipv4|length %}
+	outgoing-interface: {{ dns_primary_ipv4 }}
+{% elif dns_primary_ipv6|length %}
+        outgoing-interface: {{ dns_primary_ipv6 }}
+{% endif %}

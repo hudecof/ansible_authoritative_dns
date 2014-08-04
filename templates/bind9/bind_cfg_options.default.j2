@@ -8,11 +8,23 @@ options {
         allow-query     { none; };
         allow-transfer  { none; };
         allow-update    { none; };
-        
-        listen-on { {{ dns_listen_ipv4|join('; ') }}; }; 
 
+{% if dns_listen_ipv4|length %}
+        listen-on { {{ dns_listen_ipv4|join('; ') }}; };
+{% endif %}
+{% if dns_primary_ipv4|length %}
+        notify-source {{ dns_primary_ipv4 }};
+        transfer-source {{ dns_primary_ipv4 }};
+{% endif %}
+
+{% if dns_listen_ipv6|length %}
         listen-on-v6 { {{ dns_listen_ipv6|join('; ') }}; };
-
+{% endif %}
+{% if dns_primary_ipv6|length %}
+        notify-source-v6        {{ dns_primary_ipv6 }};
+        transfer-source-v6      {{ dns_primary_ipv6 }};
+{% endif %}
+        
         version "{{ dns_version }}";
         minimal-responses       yes;
 };

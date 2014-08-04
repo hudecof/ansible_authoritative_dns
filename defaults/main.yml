@@ -20,6 +20,13 @@ dns_listen_ipv4:
 dns_listen_ipv6:
   - ::1
 
+# the primary IP address form zone transfers
+# request AXFR|IXFR  (in case of a secondary) or 
+# used to send notifies (in case of a primary).
+# if empty = disabled
+dns_primary_ipv4: ''
+dns_primary_ipv6: ''
+
 # list of tsig configuration files
 # there will used template file 
 #  - templates/bind9/bind_cfg_key.{{ item }}.j2 for bind9
