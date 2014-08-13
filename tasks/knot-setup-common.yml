@@ -1,0 +1,10 @@
+---
+- name: "[knot] create directories"
+  action: file path={{ item.file }} owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }} state=directory
+  tags:
+    - dns
+    - knot
+    - setup
+  with_items:
+    - { file: "{{ dns_knot_dir }}/conf.d", owner: "{{ dns_knot_user }}", group: "{{ dns_knot_group }}", mode: "0750" }
+    - { file: "{{ dns_knot_dir }}/includes.d", owner: "{{ dns_knot_user }}", group: "{{ dns_knot_group }}", mode: "0750" }

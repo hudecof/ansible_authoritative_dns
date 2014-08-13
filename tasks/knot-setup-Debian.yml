@@ -1,0 +1,26 @@
+---
+- name: "[knot] installing repository list (debian)"
+  action: copy src={{ item }} dest=/etc/apt/sources.list.d/knot.list owner=root group=root mode=0644
+  first_available_file:
+    - pkg_apt/knot.{{ ansible_lsb.id }}.{{ ansible_lsb.major_release }}.list
+    - pkg_apt/knot.{{ ansible_lsb.id }}.{{ ansible_lsb.release }}.list
+    - pkg_apt/knot.default.list
+  tags:
+    - knot
+    - repository
+  register: pkg_list
+
+- name: "updating package repository (debian)"
+  action: apt update_cache=yes
+  when: "pkg_list.changed"
+  tags:
+   - knot
+   - repository
+
+- name: "[knot] check packages"
+  action: apt pkg={{ item }} state={{ dns_pkg_state }} force=yes
+  tags:
+    - dns
+    - knot
+    - setup
+  with_items: dns_knot_packages

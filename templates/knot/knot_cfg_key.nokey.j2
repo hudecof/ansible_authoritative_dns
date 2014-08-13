@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+
+remotes {
+    server0 {
+        address 203.0.113.1;		# PUT YOUR MASTER IP HERE
+        port 53;
+        key sk-nic_a.tld.sk;
+{% if dns_primary_ipv4|length %}
+        via {{ dns_primary_ipv4 }};
+{% elif dns_primary_ipv6|length %}
+        via {{ dns_primary_ipv6 }};
+{% endif %}
+    }
+}

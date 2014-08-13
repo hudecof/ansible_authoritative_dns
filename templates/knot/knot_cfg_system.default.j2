@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+
+system {
+    identity "{{ inventory_hostname }}";
+    version off;
+    nsid "{{ inventory_hostname }}";
+
+    user {{ dns_knot_user }}.{{ dns_knot_group }};
+
+    rate-limit 0;
+}
+

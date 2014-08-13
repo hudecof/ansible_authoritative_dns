@@ -1,0 +1,128 @@
+---
+- name: "[knot] configuration includes (keys, remotes)"
+  action: template src={{ dns_dir_prefix }}/knot/knot_cfg_key.{{ item.name }}.j2 dest={{ dns_knot_dir }}/includes.d/key_{{ item.name }}.cfg owner={{ dns_knot_user }}  group={{ dns_knot_group }} mode=064 
+  tags:
+    - dns
+    - knot
+    - config
+  with_items: dns_keys_tsig
+  when: "item.state == 'enabled'"
+  notify:
+    - "[knot] combine config"
+
+- name: "[knot] configuration includes remove (keys, remotes)"
+  action: file path={{ dns_knot_dir }}/includes.d/key_{{ item.name }}.cfg state=absent
+  tags:
+    - dns
+    - knot
+    - config
+  with_items: dns_keys_tsig
+  when: "item.state != 'enabled'"
+  notify:
+    - "[knot] combine config"
+
+- name: "[knot] configuration includes (zones)"
+  action: template src={{ dns_dir_prefix }}/knot/knot_cfg_zone.{{ item.template }}.j2 dest={{ dns_knot_dir }}/includes.d/zone_{{ item.zone }}.cfg owner={{ dns_knot_user }}  group={{ dns_knot_group }} mode=064 
+  tags:
+    - dns
+    - knot
+    - config
+  with_items: dns_zones
+  when: "item.state == 'enabled'"
+  notify:
+    - "[knot] combine config"
+
+- name: "[knot] configuration remove includes (zone)"
+  action: file path={{ dns_knot_dir }}/includes.d/zone_{{ item.zone }}.cfg state=absent
+  tags:
+    - dns
+    - knot
+    - config
+  with_items: dns_zones
+  when: "item.state != 'enabled'"
+  notify:
+    - "[knot] combine config"
+
+- name: "[knot] configuration (system)"
+  action: template src={{ item }} dest={{ dns_knot_dir }}/conf.d/10_system.cfg owner={{ dns_knot_user }}  group={{ dns_knot_group }} mode=064
+  tags:
+    - dns
+    - knot
+    - config
+  first_available_file:
+    - "{{ dns_dir_prefix }}/knot/knot_cfg_system.{{ inventory_hostname }}.j2"
+    - "{{ dns_dir_prefix }}/knot/knot_cfg_system.default.j2"
+    - "knot/knot_cfg_system.{{ inventory_hostname }}.j2"
+    - "knot/knot_cfg_system.default.j2"
+  notify:
+    - "[knot] combine config"
+
+- name: "[knot] configuration (keys)"
+  action: template src={{ item }} dest={{ dns_knot_dir }}/conf.d/20_keys.cfg owner={{ dns_knot_user }}  group={{ dns_knot_group }} mode=064
+  tags:
+    - dns
+    - knot
+    - config
+  first_available_file:
+    - "{{ dns_dir_prefix }}/knot/knot_cfg_keys.{{ inventory_hostname }}.j2"
+    - "{{ dns_dir_prefix }}/knot/knot_cfg_keys.default.j2"
+    - "knot/knot_cfg_keys.{{ inventory_hostname }}.j2"
+    - "knot/knot_cfg_keys.default.j2"
+  notify:
+    - "[knot] combine config"
+
+- name: "[knot] configuration (interfaces)"
+  action: template src={{ item }} dest={{ dns_knot_dir }}/conf.d/30_interfaces.cfg owner={{ dns_knot_user }}  group={{ dns_knot_group }} mode=064
+  tags:
+    - dns
+    - knot
+    - config
+  first_available_file:
+    - "{{ dns_dir_prefix }}/knot/knot_cfg_interfaces.{{ inventory_hostname }}.j2"
+    - "{{ dns_dir_prefix }}/knot/knot_cfg_interfaces.default.j2"
+    - "knot/knot_cfg_interfaces.{{ inventory_hostname }}.j2"
+    - "knot/knot_cfg_interfaces.default.j2"
+  notify:
+    - "[knot] combine config"
+
+- name: "[knot] configuration (control)"
+  action: template src={{ item }} dest={{ dns_knot_dir }}/conf.d/60_control.cfg owner={{ dns_knot_user }}  group={{ dns_knot_group }} mode=064
+  tags:
+    - dns
+    - knot
+    - config
+  first_available_file:
+    - "{{ dns_dir_prefix }}/knot/knot_cfg_control.{{ inventory_hostname }}.j2"
+    - "{{ dns_dir_prefix }}/knot/knot_cfg_control.default.j2"
+    - "knot/knot_cfg_control.{{ inventory_hostname }}.j2"
+    - "knot/knot_cfg_control.default.j2"
+  notify:
+    - "[knot] combine config"
+
+- name: "[knot] configuration (zones)"
+  action: template src={{ item }} dest={{ dns_knot_dir }}/conf.d/70_zones.cfg owner={{ dns_knot_user }}  group={{ dns_knot_group }} mode=064
+  tags:
+    - dns
+    - knot
+    - config
+  first_available_file:
+    - "{{ dns_dir_prefix }}/knot/knot_cfg_zones.{{ inventory_hostname }}.j2"
+    - "{{ dns_dir_prefix }}/knot/knot_cfg_zones.default.j2"
+    - "knot/knot_cfg_zones.{{ inventory_hostname }}.j2"
+    - "knot/knot_cfg_zones.default.j2"
+  notify:
+    - "[knot] combine config"
+
+- name: "[knot] configuration (log)"
+  action: template src={{ item }} dest={{ dns_knot_dir }}/conf.d/80_log.cfg owner={{ dns_knot_user }}  group={{ dns_knot_group }} mode=064
+  tags:
+    - dns
+    - knot
+    - config
+  first_available_file:
+    - "{{ dns_dir_prefix }}/knot/knot_cfg_log.{{ inventory_hostname }}.j2"
+    - "{{ dns_dir_prefix }}/knot/knot_cfg_log.default.j2"
+    - "knot/knot_cfg_log.{{ inventory_hostname }}.j2"
+    - "knot/knot_cfg_log.default.j2"
+  notify:
+    - "[knot] combine config"

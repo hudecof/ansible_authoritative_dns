@@ -1,0 +1,60 @@
+# {{ ansible_managed }}
+
+system {
+    identity "{{ inventory_hostname }}";
+    version off;
+    nsid "{{ inventory_hostname }}";
+
+    user {{ dns_knot_user }}.{{ dns_knot_group }};
+
+    rate-limit 0;
+}
+
+interfaces {
+{% for item in dns_listen_ipv4 %}
+    ip4_{{ loop.index }} {
+        address {{ item }};
+        port 53;
+    }
+{% endfor %}
+{% for item in dns_listen_ipv6 %}
+    ip6_{{ loop.index }} {
+        address {{ item }};
+        port 53;
+    }
+{% endfor %}
+}
+
+control {
+    listen-on "knot.sock";
+}
+
+# this will include keys and remotes sections
+{% for item in dns_keys_tsig %}
+{% if item['state'] == 'enabled' %}
+include "{{ dns_knot_dir }}/includes.d/key_{{ item['name'] }}.cfg";
+{% endif %}
+{% endfor %} 
+
+zones {
+    semantic-checks off;
+    dnssec-enable off;
+
+{% for item in dns_zones %}
+{% if item['state'] == 'enabled' %}
+    include "{{ dns_knot_dir }}/includes.d/zone_{{ item['zone'] }}.cfg";
+{% endif %}
+{% endfor %} 
+}
+
+log {
+  syslog {
+    # Log info and more serious events to syslog
+    any info;
+  }
+
+  # Log warnings, errors and criticals to stderr
+  stderr {
+    any warning;
+  }
+}

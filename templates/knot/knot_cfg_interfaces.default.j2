@@ -1,0 +1,17 @@
+# {{ ansible_managed }}
+
+interfaces {
+{% for item in dns_listen_ipv4 %}
+    ip4_{{ loop.index }} {
+        address {{ item }};
+        port 53;
+    }
+{% endfor %}
+{% for item in dns_listen_ipv6 %}
+    ip6_{{ loop.index }} {
+        address {{ item }};
+        port 53;
+    }
+{% endfor %}
+}
+

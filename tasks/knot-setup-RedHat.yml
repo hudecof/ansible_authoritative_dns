@@ -1,0 +1,8 @@
+---
+- name: "[knot] check packages"
+  action: yum pkg={{ item }} state={{ dns_pkg_state }}
+  tags:
+    - dns
+    - knot
+    - setup
+  with_items: dns_knot_packages

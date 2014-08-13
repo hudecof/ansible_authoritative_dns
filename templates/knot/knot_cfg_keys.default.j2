@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+
+# this will include keys and remotes sections
+{% for item in dns_keys_tsig %}
+{% if item['state'] == 'enabled' %}
+include "{{ dns_knot_dir }}/includes.d/key_{{ item['name'] }}.cfg";
+{% endif %}
+{% endfor %} 

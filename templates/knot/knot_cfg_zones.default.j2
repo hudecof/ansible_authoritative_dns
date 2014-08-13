@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+
+zones {
+    semantic-checks off;
+    dnssec-enable off;
+
+{% for item in dns_zones %}
+{% if item['state'] == 'enabled' %}
+    include "{{ dns_knot_dir }}/includes.d/zone_{{ item['zone'] }}.cfg";
+{% endif %}
+{% endfor %} 
+}
+

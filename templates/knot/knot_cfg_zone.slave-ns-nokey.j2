@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+# {{ dns_zone_data[item['zone']]['descr'] }}
+    {{ item['zone'] }} {
+        file "{{ dns_zone_data[item['zone']]['file'] }}";
+        xfr-in server0;
+        notify-in server0; 
+    }  

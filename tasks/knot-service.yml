@@ -1,0 +1,6 @@
+- name: "[knot] service boot/running state"
+  action: service name={{ dns_knot_service }} enabled={{ dns_service_enabled }} state={{ dns_service_state }}
+  tags:
+    - dns
+    - knot
+    - service

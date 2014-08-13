@@ -1,0 +1,8 @@
+---
+ - name: "[knot] restart service"
+   action: service name={{ dns_knot_service }} state=restarted
+ 
+ - name: "[knot] combine config"
+   action: assemble backup=yes src={{ dns_knot_dir }}/conf.d/ dest={{ dns_knot_cfg }} owner={{ dns_knot_user }} group={{ dns_knot_group }} mode=0640
+   notify:
+     - "[knot] restart service"

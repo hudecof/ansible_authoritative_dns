@@ -5,6 +5,7 @@
     - dns
     - nsd
     - bind
+    - knot
     - setup
     - config
     - service
@@ -31,3 +32,13 @@
 - include: nsd3-service.yml
   when: "'dns-nsd3' in {{ group_names }}"
 
+- include: knot-setup-Debian.yml
+  when: "'dns-knot' in {{ group_names }} and ansible_os_family == 'Debian'"
+- include: knot-setup-RedHat.yml
+  when: "'dns-knot' in {{ group_names }} and ansible_os_family == 'RedHat'"
+- include: knot-setup-common.yml
+  when: "'dns-knot' in {{ group_names }}"
+- include: knot-config.yml
+  when: "'dns-knot' in {{ group_names }}"
+- include: knot-service.yml
+  when: "'dns-knot' in {{ group_names }}"

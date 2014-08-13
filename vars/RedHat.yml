@@ -23,6 +23,17 @@ dns_nsd_user: nsd
 dns_nsd_group: nsd
 dns_nsd_cfg: /etc/nsd/nsd.conf
 
+# knot related configuration
+dns_knot_service: knot
+dns_knot_packages:
+  - knot
+  - rsyslog
+dns_knot_user: knot
+dns_knot_group: knot
+
+dns_knot_cfg: /etc/knot/knot.conf
+dns_knot_dir: /etc/knot
+
 # rsyslog related configuration
 dns_rsyslog_service: rsyslog
 dns_rsyslog_cfg: /etc/rsyslog.d

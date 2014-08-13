@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+
+log {
+  syslog {
+    # Log info and more serious events to syslog
+    any info;
+  }
+
+  # Log warnings, errors and criticals to stderr
+  stderr {
+    any warning;
+  }
+}
