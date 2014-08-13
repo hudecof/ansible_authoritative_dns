@@ -5,6 +5,7 @@ This roles enables users to configure the dns servers
 
 - BIND9
 - NSD3
+- KNOT
 
 As the BIND9 configuration could be complex, this role is recommend to use
 only for autoritative DNS setup as the NSD is not able to handle recursive queries.
@@ -12,12 +13,21 @@ only for autoritative DNS setup as the NSD is not able to handle recursive queri
 BIND9 and NSD3 was choosen for their widely usage in ROOT and TLD zones.
 You're welcome do add any other modules for another dns server implementation.
 
+KNOT is new implementation of authoritative dns server by CZ.NIC, let him change ;)
+
 Requirements
 ------------
 This role requires Ansible 1.4 or higher, and platform requirements are listed
 in the metadata file. It should work also with lower version, but I have never tested it.
 
 To install `nsd3` on RedHat/CentOS you need to use EPEL repository. Upon request I can add tasks to the RedHat setup section to add EPEL repository.
+
+To install `knot` on Debian is used  official repository, see https://www.knot-dns.cz/pages/download.html.
+
+To install `knot` on Ubuntu is used PPA, see https://launchpad.net/~cz.nic-labs/+archive/ubuntu/knot-dns.
+
+To install `knot` on RedHat/CentOS you need to use EPEL repository. Upon request I can add tasks to the RedHat setup section to add EPEL repository.
+
 
 Role Variables
 --------------
@@ -39,11 +49,16 @@ The variables in the `vars/main.yml` are global for all managed servers.
     host3
     host4
 
+    [dns:knot]
+    host5
+    host6
+
     [dns:children]
     dns-bind9
     dns-nsd3
+    dns-knot
 
-The group names `dns-bind9` and `dns-nsd3` are mandatory. The tasks depenends on these names.
+The group names `dns-bind9`, `dns-nsd3`, `dns-knot` are mandatory. The tasks depenends on these names.
 
 ### vars/main.yml
 
@@ -62,13 +77,16 @@ The `dns_zone_data` disctionary holds all zonem names where
 ### defauls/main.yml
 Among all variables the most important are
 
-    dns_keys_tsig: []
+    dns_keys_tsig:
+       - name: key01-slave
+         state: enabled
 
 list of tsig configuration files
 there will used template file
 
 - templates/bind9/bind_cfg_key.{{ item }}.j2 for bind9
 - templates/nsd3/nsd_cfg_key.{{ item }}.j2 for nsd3
+- templates/knot/knot_cfg_key.{{ item }}.j2 for knot
 
 
     dns_zones:
@@ -81,6 +99,11 @@ the 'templates' item is a jinja2 template file in templates/(bind|nsd)
 
 - templates/bind9/bind_cfg_zone.{{ item }}.j2 for bind9
 - templates/nsd3/nsd_cfg_zone.{{ item }}.j2 for nsd3
+- templates/knot/knot_cfg_zone.{{ item }}.j2 for knot
+
+TODO
+----
+Add support for YADIFA, http://www.yadifa.eu/.
 
 Dependencies
 ------------
