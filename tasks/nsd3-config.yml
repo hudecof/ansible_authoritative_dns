@@ -17,7 +17,7 @@
     - dns
     - nsd
     - config
-  with_items: "{{ dns_keys_tsig }}"
+  with_items: dns_keys_tsig
   when: "item.state == 'enabled'"
   notify:
     - "[nsd] combine config"
@@ -28,7 +28,7 @@
     - dns
     - nsd
     - config
-  with_items: "{{ dns_keys_tsig }}"
+  with_items: dns_keys_tsig
   when: "item.state != 'enabled'"
   notify:
     - "[nsd] combine config"
@@ -40,7 +40,7 @@
     - dns
     - nsd
     - config
-  with_items: "{{ dns_zones }}"
+  with_items: dns_zones
   when: "item.state == 'enabled'"
   notify:
     - "[nsd] combine config"
@@ -51,7 +51,7 @@
     - dns
     - nsd
     - config
-  with_items: "{{ dns_zones }}"
+  with_items: dns_zones
   when: "item.state != 'enabled'"
   notify:
     - "[nsd] combine config"

@@ -14,14 +14,14 @@
     - bind
     - setup
   with_items:
-    - { file: "{{ dns_bind_chroot }}/etc/zones", owner: "{{ dns_bind_user }}", group: "{{ bind_group }}", mode: "0750" }
-    - { file: "{{ dns_bind_chroot }}/conf.d", owner: "{{ dns_bind_user }}", group: "{{ bind_group }}", mode: "0750" }
+    - { file: "{{ dns_bind_chroot }}/etc/zones", owner: "{{ dns_bind_user }}", group: "{{ dns_bind_group }}", mode: "0750" }
+    - { file: "{{ dns_bind_chroot }}/conf.d", owner: "{{ dns_bind_user }}", group: "{{ dns_bind_group }}", mode: "0750" }
 
 - name: "[bind] change startup options in /etc/sysconfig/named]"
   action: >
      lineinfile
      regexp="^ROOTDIR="
-     line="ROOTDIR={{ bind_chroot }}"
+     line="ROOTDIR={{ dns_bind_chroot }}"
      dest=/etc/sysconfig/named
      state=present
      insertafter=EOF

@@ -29,7 +29,7 @@
     - dns
     - bind
     - config
-  with_items: "{{ dns_keys_tsig }}"
+  with_items: dns_keys_tsig
   when: "item.state == 'enabled'"
   notify:
     - "[bind9] combine config"
@@ -40,7 +40,7 @@
     - dns
     - bind
     - config
-  with_items: "{{ dns_keys_tsig }}"
+  with_items: dns_keys_tsig
   when: "item.state != 'enabled'"
   notify:
     - "[bind9] combine config"
@@ -51,7 +51,7 @@
     - dns
     - bind
     - config
-  with_items: "{{ dns_zones }}"
+  with_items: dns_zones
   when: "item.state == 'enabled'"
   notify:
     - "[bind9] combine config"
@@ -62,7 +62,7 @@
     - dns
     - bind
     - config
-  with_items: "{{ dns_zones }}"
+  with_items: dns_zones
   when: "item.state != 'enabled'"
   notify:
     - "[bind9] combine config"

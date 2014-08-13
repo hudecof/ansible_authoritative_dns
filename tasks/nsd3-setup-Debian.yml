@@ -5,4 +5,4 @@
     - dns
     - nsd
     - setup
-  with_items: "{{ dns_nsd_packages }}"
+  with_items: dns_nsd_packages
